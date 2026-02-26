@@ -106,29 +106,106 @@ import unittest
 #         with self.assertRaises(TypeError):
 #             get_average_grade({"Alice": [1,2,3], "Charlie": (2,3,4)})
 
-def calculate_shipping_cost(weight, destination):
-    if not isinstance(weight, (int, float)):
-        raise TypeError("Weight must be a number")
-    if weight <= 0:
-        raise ValueError("Weight must be greater than zero")
-    if not isinstance(destination, str):
-        raise TypeError("Destination must be a string")
-    if not destination:
-        raise ValueError("Destination cannot be empty")
-    if destination.lower() == "usa":
-        return 0
-    if destination.lower() == "canada":
-        return weight * 1.5
-    if destination.lower() == "mexico":
-        return weight * 2.0
-    return weight * 5.0
+# def calculate_shipping_cost(weight, destination):
+#     if not isinstance(weight, (int, float)):
+#         raise TypeError("Weight must be a number")
+#     if weight <= 0:
+#         raise ValueError("Weight must be greater than zero")
+#     if not isinstance(destination, str):
+#         raise TypeError("Destination must be a string")
+#     if not destination:
+#         raise ValueError("Destination cannot be empty")
+#     if destination.lower() == "usa":
+#         return 0
+#     if destination.lower() == "canada":
+#         return weight * 1.5
+#     if destination.lower() == "mexico":
+#         return weight * 2.0
+#     return weight * 5.0
 
-class TestCalculateShippingCost(unittest.TestCase):
-    def test_non_numeric_weight(self):
-        with self.assertRaises(ValueError, msg="Weight must be a number"):
-            calculate_shipping_cost("5", "USA")
-            
+# class TestCalculateShippingCost(unittest.TestCase):
+#     def test_non_numeric_weight(self):
+#         with self.assertRaisesRegex(TypeError,  "Weight must be a number"):
+#             calculate_shipping_cost("LOL", "California")
+    
+#     def test_non_positive_weight(self):
+#         with self.assertRaisesRegex(ValueError, "Weight must be greater than zero"):
+#             calculate_shipping_cost(-20, "California")
+    
+#     def test_non_string_destination(self):
+#         with self.assertRaisesRegex(TypeError, "Destination must be a string"):
+#             calculate_shipping_cost(100, 100)
+
+#     def test_empty_destination(self):
+#         with self.assertRaisesRegex(ValueError, "Destination cannot be empty"):
+#             calculate_shipping_cost(100, "")
+
+# def calculate_grade(scores):
+#     if not isinstance(scores, list):
+#         raise TypeError("Input must be a list")
+#     if not scores:
+#         raise ValueError("List cannot be empty")
+#     if not all(isinstance(score, (int, float)) for score in scores):
+#         raise TypeError("Elements of list must be numbers")
+#     if not all(0 <= score <= 100 for score in scores):
+#         raise ValueError("Elements of list must be between 0 and 100")
+#     return sum(scores) / len(scores)
+
+# class TestCalculateGrade(unittest.TestCase):
+#     def test_non_list_input(self):
+#         with self.assertRaisesRegex(TypeError, "Input must be a list"):
+#             calculate_grade(5)
+    
+#     def test_empty_list_input(self):
+#         with self.assertRaisesRegex(ValueError, "List cannot be empty"):
+#             calculate_grade([])
+    
+#     def test_non_numeric_element(self):
+#         with self.assertRaisesRegex(TypeError, "Elements of list must be numbers"):
+#             calculate_grade([1,2, "A", 'B', 5])
+    
+#     def test_out_of_range_element(self):
+#         with self.assertRaisesRegex(ValueError,  "Elements of list must be between 0 and 100"):
+#             calculate_grade([1,2,3, -10, 102])
+
+import warnings
+
+# def calculate_salary(wages, hours):
+#     if len(wages) != len(hours):
+#         raise ValueError("Wages and hours lists must have the same length")
+#     if not all(isinstance(wage, (int, float)) for wage in wages):
+#         raise TypeError("Wages list must contain numbers")
+#     if not all(isinstance(hour, (int, float)) for hour in hours):
+#         raise TypeError("Hours list must contain numbers")
+#     if not all(hour >= 0 for hour in hours):
+#         raise ValueError("Hours must be non-negative")
+#     if not all(wage >= 0 for wage in wages):
+#         raise ValueError("Wages must be non-negative")
+#     total_salary = sum([wages[i]*hours[i] for i in range(len(wages))])
+#     if total_salary == 0:
+#         warnings.warn("Total salary is zero or negative")
+#     return total_salary
+
+# class TestCalculateSalary(unittest.TestCase):
+#     def test_zero_salary_warning(self):
+#         with self.assertWarns(UserWarning, msg="Total salary is zero or negative"):
+#             calculate_salary([0],[0])
+
+class User:
+    def __init__(self, password):
+        self.password = password
+        if len(password) < 8:
+            warnings.warn("Password too short", category=Warning)
+
+class TestUser(unittest.TestCase):
+    def test_short_password_warning(self):
+        with self.assertWarns(Warning, msg="Password too short"):
+            user = User("passwor") 
+            print(user.password)       
+            self.assertIsNotNone(user.password)
+
+            user1 = User("password")
+            self.assertGreaterEqual(len(user1.password), 8)
 
 if __name__ == "__main__":
     unittest.main()
-
